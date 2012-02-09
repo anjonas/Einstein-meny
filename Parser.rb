@@ -8,9 +8,13 @@ class Parser
     doc.xpath('//td/table/tbody/tr/td/p').each do |node|
         week_meny.push(node.text.match(/M(.*)/))
     	week_meny.push(node.text.match(/Tis(.*)/))
-    	week_meny.push(node.text.match(/Ons(.*Tors)/))
+    	week_meny.push((node.text.match(/Ons(.*Tors)/)))
     	week_meny.push(node.text.match(/Tors(.*)/))
         week_meny.push(node.text.match(/Fre(.*)/))
+    end
+    week_meny = week_meny - ["", nil]
+    week_meny.each do |node|
+    	puts node
     end
   end
 end
