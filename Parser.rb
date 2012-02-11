@@ -1,24 +1,29 @@
+# encoding: utf-8
+
 require 'nokogiri'
 require 'open-uri'
+require 'charlock_holmes/string'
+
 
 class Parser
   def get_meny
-  	week_meny = []
+  	weekday = []
+    week_meny = []
     doc = Nokogiri::HTML(open("http://butlercatering.se/"))
     doc.xpath('//td/table/tbody/tr/td/p').each do |node|
-        week_meny.push(node.text.match(/M(.*)/))
-    	week_meny.push(node.text.match(/Tis(.*)/))
-    	week_meny.push((node.text.match(/Ons(.*Tors)/)))
-    	week_meny.push(node.text.match(/Tors(.*)/))
-        week_meny.push(node.text.match(/Fre(.*)/))
+        weekday.push(node.text.match(/Mån(.*)/))
+    	weekday.push(node.text.match(/Tis(.*)/))
+    	weekday.push((node.text.match(/Ons(.*Tors)/)))
+    	weekday.push(node.text.match(/Tors(.*)/))
+        weekday.push(node.text.match(/Fre(.*)/))
     end
-    week_meny = week_meny - ["", nil]
-    week_meny.each do |node|
-    	puts node
+    
+    weekday = weekday - ["", nil]
+    weekday.each do |node|
+    	week_meny.push(node.to_s.split("•"))
     end
+
+    return week_meny
   end
+
 end
-
-
-parser = Parser.new
-parser.get_meny
